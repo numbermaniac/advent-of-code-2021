@@ -4,16 +4,14 @@ function setup()
 	folds = Tuple{Char, Int}[]
 
 	for line in lines
-		if !startswith(line, "fold")
-			if occursin(",", line)
-				x, y = [parse(Int, i) for i in split(line, ",")]
-				push!(dots, (x, y))
-			end
-		else
+		if startswith(line, "fold")
 			left, right = split(line, "=")
 			left = last(left)
 			right = parse(Int, right)
 			push!(folds, (left, right))
+		elseif line != ""
+				x, y = [parse(Int, i) for i in split(line, ",")]
+				push!(dots, (x, y))
 		end
 	end
 
@@ -25,21 +23,13 @@ function folddots(folddir :: Char, foldcoord :: Int, dots :: Vector{Tuple{Int, I
 	if folddir == 'x'
 		for dot in dots
 			x, y = dot
-			if x < foldcoord
-				push!(newdots, dot)
-			else
-				push!(newdots, (foldcoord * 2 - x, y))
-			end
+			x < foldcoord ? push!(newdots, dot) : push!(newdots, (foldcoord * 2 - x, y))
 		end
 	
 	elseif folddir == 'y'
 		for dot in dots
 			x, y = dot
-			if y < foldcoord
-				push!(newdots, dot)
-			else
-				push!(newdots, (x, foldcoord * 2 - y))
-			end
+			y < foldcoord ? push!(newdots, dot) : push!(newdots, (x, foldcoord * 2 - y))
 		end
 	end
 
