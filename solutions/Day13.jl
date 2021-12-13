@@ -50,6 +50,7 @@ function part2()
 	for (folddir, foldcoord) in folds
 		dots = folddots(folddir, foldcoord, dots)
 	end
+	dots = Set(dots)
 
 	highest = maximum(maximum.(dots))
 	for i in 0:5
